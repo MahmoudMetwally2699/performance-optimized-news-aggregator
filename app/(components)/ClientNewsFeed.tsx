@@ -7,19 +7,21 @@ import { CategoryFilter } from './CategoryFilter';
 import { SearchBar } from './SearchBar';
 
 interface Article {
+  id: string;
   _id?: string;
   url: string;
   title: string;
   description?: string;
   content?: string;
-  publishedAt?: string;
+  publishedAt: string;
   urlToImage?: string;
-  source?: {
-    id?: string;
-    name?: string;
+  source: {
+    id: string | null;
+    name: string;
   };
   views?: number;
   favorites?: string[];
+  isFavorited?: boolean;
 }
 
 export function ClientNewsFeed() {
