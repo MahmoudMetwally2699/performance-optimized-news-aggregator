@@ -7,23 +7,32 @@ import { Pagination } from './(components)/Pagination';
 import { fetchNews } from './lib/news-service';
 import { getSession } from './lib/auth';
 
-type SearchParams = { [key: string]: string | string[] | undefined };
+interface SearchParams {
+  page?: string | string[];
+  category?: string | string[];
+  q?: string | string[];
+  [key: string]: string | string[] | undefined;
+}
 
-interface HomePageProps {
-  searchParams: SearchParams;
+export interface HomePageProps {
+  searchParams: Promise<SearchParams> | SearchParams;
 }
 
 const Home = async ({ searchParams }: HomePageProps) => {
+  // Await the searchParams before accessing properties
   const params = await searchParams;
+
   const page = Number(params.page) || 1;
-  const category = params.category || 'general';
+  const category = typeof params.category === 'string' ? params.category : 'general';
+  const query = typeof params.q === 'string' ? params.q : '';
   const session = await getSession();
 
   try {
     const { articles, totalResults } = await fetchNews({
       page: page.toString(),
       pageSize: '12',
-      category
+      category: category,
+      q: query
     });
 
     const formattedArticles = articles.map(article => ({

@@ -21,6 +21,8 @@ export function SearchBar() {
     } else {
       params.delete('q');
     }
+    // Reset to page 1 when searching
+    params.delete('page');
 
     router.push(`/?${params.toString()}`);
     setIsLoading(false);
