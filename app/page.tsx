@@ -7,17 +7,13 @@ import { Pagination } from './(components)/Pagination';
 import { fetchNews } from './lib/news-service';
 import { getSession } from './lib/auth';
 
-type SearchParams = {
-  category?: string;
-  q?: string;
-  page?: string;
-};
+type SearchParams = { [key: string]: string | string[] | undefined };
 
-export default async function HomePage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}) {
+interface HomePageProps {
+  searchParams: SearchParams;
+}
+
+const Home = async ({ searchParams }: HomePageProps) => {
   const params = await searchParams;
   const page = Number(params.page) || 1;
   const category = params.category || 'general';
@@ -70,4 +66,6 @@ export default async function HomePage({
     console.error('Error fetching news:', error);
     return <div>Error loading news</div>;
   }
-}
+};
+
+export default Home;
