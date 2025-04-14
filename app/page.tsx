@@ -8,23 +8,23 @@ import { fetchNews } from './lib/news-service';
 import { getSession } from './lib/auth';
 
 interface SearchParams {
-  page?: string | string[];
-  category?: string | string[];
-  q?: string | string[];
-  [key: string]: string | string[] | undefined;
+  page?: string;
+  category?: string;
+  q?: string;
+  [key: string]: string | undefined;
 }
 
-export interface HomePageProps {
+interface PageProps {
+  params?: { [key: string]: string | string[] };
   searchParams: Promise<SearchParams> | SearchParams;
 }
 
-const Home = async ({ searchParams }: HomePageProps) => {
-  // Await the searchParams before accessing properties
+const Home = async ({ searchParams }: PageProps) => {
   const params = await searchParams;
 
   const page = Number(params.page) || 1;
-  const category = typeof params.category === 'string' ? params.category : 'general';
-  const query = typeof params.q === 'string' ? params.q : '';
+  const category = params.category || 'general';
+  const query = params.q || '';
   const session = await getSession();
 
   try {
