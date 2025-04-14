@@ -11,15 +11,14 @@ interface SearchParams {
   page?: string;
   category?: string;
   q?: string;
-  [key: string]: string | undefined;
 }
 
 interface PageProps {
-  params?: { [key: string]: string | string[] };
-  searchParams: Promise<SearchParams> | SearchParams;
+  searchParams: Promise<SearchParams>; // Explicitly type searchParams as a Promise
 }
 
 const Home = async ({ searchParams }: PageProps) => {
+  // Await the searchParams to resolve it
   const params = await searchParams;
 
   const page = Number(params.page) || 1;
@@ -58,14 +57,16 @@ const Home = async ({ searchParams }: PageProps) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {formattedArticles.map(article => (
-            <NewsCard
-              key={article.id}
-              article={article}
-              userId={session?.id}
-              showShare={true}
-            />
-          ))}
+          <Suspense fallback={<NewsPreloader />}>
+            {formattedArticles.map(article => (
+              <NewsCard
+                key={article.id}
+                article={article}
+                userId={session?.id}
+                showShare={true}
+              />
+            ))}
+          </Suspense>
         </div>
 
         <Pagination total={totalResults} perPage={12} />
