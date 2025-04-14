@@ -1,11 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import type { NewsArticle } from '../lib/news-service';
-import { ArticleModal } from './ArticleModal';
 import { useRouter } from 'next/navigation';
 import { FavoriteButton } from './FavoriteButton';
 import { ShareButton } from './ShareButton';

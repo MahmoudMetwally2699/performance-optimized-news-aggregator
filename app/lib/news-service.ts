@@ -1,7 +1,7 @@
 import { connectDB } from './db';
 import { Article } from '../models/Article';
 import { getSession } from './auth';
-import { NewsParams } from '../types';
+import mongoose from 'mongoose';
 
 export type NewsArticle = {
   title: string;
@@ -19,6 +19,13 @@ export type NewsResponse = {
   status: string;
   totalResults: number;
   articles: NewsArticle[];
+};
+
+export type NewsParams = {
+  pageSize?: string;
+  page?: string;
+  category?: string;
+  [key: string]: string | undefined;
 };
 
 type NewsApiResponse = {
@@ -98,10 +105,14 @@ export async function getNews(params: Record<string, string | undefined> = {}): 
         { upsert: true, new: true, lean: true }
       );
 
+      if (!saved) {
+        throw new Error('Failed to save article');
+      }
+
       return {
         ...article,
         id: saved._id.toString(),
-        isFavorited: saved.favorites?.includes(session?.id)
+        isFavorited: session?.id ? saved.favorites?.includes(new mongoose.Types.ObjectId(String(session.id))) : false
       };
     })
   );
