@@ -6,8 +6,24 @@ import { NewsCard } from './NewsCard';
 import { CategoryFilter } from './CategoryFilter';
 import { SearchBar } from './SearchBar';
 
+interface Article {
+  _id?: string;
+  url: string;
+  title: string;
+  description?: string;
+  content?: string;
+  publishedAt?: string;
+  urlToImage?: string;
+  source?: {
+    id?: string;
+    name?: string;
+  };
+  views?: number;
+  favorites?: string[];
+}
+
 export function ClientNewsFeed() {
-  const [articles, setArticles] = useState([]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -38,7 +54,11 @@ export function ClientNewsFeed() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {articles.map((article) => (
-          <NewsCard key={article.url} article={article} />
+          <NewsCard
+            key={article.url}
+            article={article}
+            showShare={true}
+          />
         ))}
       </div>
 
