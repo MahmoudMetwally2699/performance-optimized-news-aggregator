@@ -41,7 +41,7 @@ export default async function ArticlePage({
     const isFavorited = session?.id && serializedArticle?.favorites?.includes(session.id);
 
     // Only track view if user is logged in and article exists
-    if (session?.id && article) {
+    if (session?.id && typeof session.id === 'string' && article) {
       await article.addView(session.id);
     }
 
@@ -173,7 +173,7 @@ export default async function ArticlePage({
                   <NewsCard
                     key={rec.id}
                     article={rec}
-                    userId={session?.id}
+                    userId={session?.id as string | undefined}
                   />
                 ))}
               </div>

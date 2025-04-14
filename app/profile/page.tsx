@@ -75,7 +75,7 @@ export default async function ProfilePage() {
   if (!session) redirect('/login');
 
   await connectDB();
-  const userId = new mongoose.Types.ObjectId(session.id);
+  const userId = new mongoose.Types.ObjectId(session.id as string);
 
   const [favorites, history, analytics] = await Promise.all([
     Article.find({ favorites: userId })

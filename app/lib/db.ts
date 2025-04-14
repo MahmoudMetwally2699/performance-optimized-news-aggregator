@@ -1,10 +1,19 @@
 import mongoose from 'mongoose';
 
+interface CachedConnection {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
+declare global {
+  var mongoose: CachedConnection;
+}
+
 if (!process.env.MONGODB_URI) {
   throw new Error('Please add your Mongo URI to .env.local');
 }
 
-let cached = global.mongoose;
+let cached: CachedConnection = global.mongoose;
 
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };

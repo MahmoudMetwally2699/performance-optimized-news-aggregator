@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 export async function POST(request: Request) {
   try {
     const session = await getSession();
-    if (!session?.id) {
+    if (!session?.id || typeof session.id !== 'string') {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

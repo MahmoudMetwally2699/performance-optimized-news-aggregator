@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { connectDB } from '../../../../lib/db';
 import { Article } from '../../../../models/Article';
 import { getSession } from '../../../../lib/auth';
+import mongoose from 'mongoose';
 
 export async function POST(
   request: Request,
@@ -21,13 +22,12 @@ export async function POST(
     if (!article) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 });
     }
-
-    const isFavorited = article.favorites.includes(session.id);
+    const isFavorited = article.favorites.includes(new mongoose.Types.ObjectId(String(session.id)));
 
     if (isFavorited) {
-      await article.removeFromFavorites(session.id);
+      await article.removeFromFavorites(String(session.id));
     } else {
-      await article.addToFavorites(session.id);
+      await article.addToFavorites(String(session.id));
     }
 
     return NextResponse.json({ success: true });

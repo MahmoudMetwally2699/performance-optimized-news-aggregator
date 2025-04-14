@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import { connectDB } from '../../../lib/db';
 import { User } from '../../../models/User';
@@ -15,7 +16,8 @@ function serializeUser(user: any) {
 
 export async function GET(request: Request) {
   try {
-    const token = request.cookies.get('auth_token')?.value;
+    const cookieStore = await cookies();
+    const token = cookieStore.get('auth_token')?.value;
 
     if (!token) {
       return NextResponse.json({ user: null }, { status: 401 });

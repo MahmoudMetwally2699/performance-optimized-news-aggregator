@@ -24,7 +24,7 @@ const Home = async ({ searchParams }: PageProps) => {
   const page = Number(params.page) || 1;
   const category = params.category || 'general';
   const query = params.q || '';
-  const session = await getSession();
+  const session = (await getSession()) as { id?: string } | null;
 
   try {
     const { articles, totalResults } = await fetchNews({
@@ -34,13 +34,46 @@ const Home = async ({ searchParams }: PageProps) => {
       q: query
     });
 
-    const formattedArticles = articles.map(article => ({
+    interface Article {
+      _id?: string;
+      url: string;
+      title: string;
+      description: string;
+      content: string;
+      publishedAt?: string;
+      urlToImage: string;
+      source: {
+        id: string | null;
+        name: string;
+      };
+      views?: number;
+      favorites?: string[];
+    }
+
+    interface FormattedArticle {
+      id: string;
+      url: string;
+      title: string;
+      description: string;
+      content: string;
+      publishedAt: string;
+      urlToImage: string;
+      source: {
+        id: string | null;
+        name: string;
+      };
+      views: number;
+      favorites: string[];
+      isFavorited: boolean;
+    }
+
+    const formattedArticles: FormattedArticle[] = articles.map((article: Article) => ({
       id: article._id?.toString() || article.url,
       url: article.url,
       title: article.title,
       description: article.description,
       content: article.content,
-      publishedAt: article.publishedAt ? new Date(article.publishedAt).toISOString() : null,
+      publishedAt: article.publishedAt ? new Date(article.publishedAt).toISOString() : new Date().toISOString(), // Always provides a string
       urlToImage: article.urlToImage,
       source: article.source,
       views: Number(article.views || 0),
