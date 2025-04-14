@@ -1,0 +1,58 @@
+.article-content {
+  font-family: 'Georgia', serif;
+  line-height: 1.8;
+  font-size: 1.2rem;
+}
+
+.article-content p {
+  margin-bottom: 1.5em;
+  color: #e5e7eb;
+}
+
+.article-content h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin: 2em 0 1em;
+  color: white;
+}
+
+.article-content h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 1.5em 0 1em;
+  color: white;
+}
+
+.article-content blockquote {
+  border-left: 4px solid #3b82f6;
+  padding-left: 1em;
+  margin: 1.5em 0;
+  font-style: italic;
+  color: #9ca3af;
+}
+
+.article-content a {
+  color: #60a5fa;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.article-content a:hover {
+  color: #3b82f6;
+}
+
+.article-content img {
+  border-radius: 0.5rem;
+  margin: 2em 0;
+}
+
+.article-content ul,
+.article-content ol {
+  margin: 1.5em 0;
+  padding-left: 1.5em;
+}
+
+.article-content li {
+  margin: 0.5em 0;
+  color: #e5e7eb;
+}
