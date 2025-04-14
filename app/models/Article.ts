@@ -43,6 +43,7 @@ interface IArticle {
     viewedAt: Date;
   }>;
   category?: string;
+  createdAt: Date;
 }
 
 interface ArticleMethods {
@@ -77,7 +78,7 @@ const articleSchema = new mongoose.Schema<ArticleDocument>({
 
 // Update toJSON implementation
 articleSchema.method('toJSON', function(): SerializedArticle {
-  const obj = this.toObject();
+  const obj = this.toObject() as Document & IArticle & { _id: mongoose.Types.ObjectId };
   return {
     ...obj,
     _id: obj._id.toString(),
